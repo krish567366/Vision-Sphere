@@ -1,0 +1,4 @@
+[console_scripts]
+vision-agent = vision_agent.cli:main
+vision-enhanced = vision_agent.enhanced_server:start_enhanced_server
+vision-server = vision_agent.server:start_server

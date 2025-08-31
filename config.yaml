@@ -1,0 +1,82 @@
+# VisionAgent Configuration File
+# Customize the behavior of all agents and server settings
+
+# Global Settings
+default_device: "auto"  # auto, cpu, cuda
+model_cache_dir: "./models"
+temp_dir: "./temp"
+
+# Face Agent Configuration
+face_agent:
+  enabled: true
+  model:
+    name: "face_recognition"
+    path: null
+    device: null
+    confidence_threshold: 0.6
+    batch_size: 1
+    custom_params:
+      face_detection_model: "hog"  # hog (CPU-friendly) or cnn (GPU-optimized)
+      num_jitters: 1  # Number of re-samplings for face encoding
+      tolerance: 0.6  # Face matching tolerance (lower = stricter)
+
+# Object Detection Agent Configuration  
+object_agent:
+  enabled: true
+  model:
+    name: "yolov8s.pt"  # yolov8n.pt, yolov8s.pt, yolov8m.pt, yolov8l.pt, yolov8x.pt
+    path: null
+    device: null
+    confidence_threshold: 0.5
+    batch_size: 1
+    custom_params:
+      model_size: "small"  # nano, small, medium, large, xlarge
+      iou_threshold: 0.45
+      max_detections: 100
+      target_classes: null  # null for all classes, or list of class names
+
+# Video Analysis Agent Configuration
+video_agent:
+  enabled: true
+  model: null
+  processing_params:
+    frame_skip: 1  # Number of frames to skip between analysis
+    max_frames: 1000  # Maximum frames to process per video
+    track_objects: true
+    track_faces: true
+    output_format: "summary"  # summary or detailed
+    face_config: {}  # Override face agent config for video
+    object_config: {}  # Override object agent config for video
+
+# Image Classification Agent Configuration
+classification_agent:
+  enabled: true
+  model:
+    name: "microsoft/resnet-50"  # HuggingFace model name
+    path: null
+    device: null
+    confidence_threshold: 0.1
+    batch_size: 1
+    custom_params:
+      top_k: 5  # Number of top predictions to return
+      threshold: 0.1  # Minimum confidence threshold
+      image_size: 224  # Input image size
+      return_features: false  # Return feature vectors
+
+# API Server Configuration
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  max_file_size_mb: 100
+  cors_origins: null  # ["http://localhost:3000"] for specific origins
+  enable_websocket: true
+  rate_limit_per_minute: 60
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: null  # "./logs/visionagent.log" to enable file logging
+  max_file_size_mb: 10
+  backup_count: 5
